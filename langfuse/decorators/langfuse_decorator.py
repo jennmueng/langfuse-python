@@ -259,13 +259,9 @@ class LangfuseDecorator:
             parent = stack[-1] if stack else None
 
             # Collect default observation data
-            observation_id = func_kwargs.pop("langfuse_observation_id", None)
-            tags = func_kwargs.pop("langfuse_tags", None)
-            metadata = func_kwargs.pop("langfuse_metadata", None)
-            session_id = func_kwargs.pop("langfuse_session_id", None)
-            user_id = func_kwargs.pop("langfuse_user_id", None)
+            langfuse_data = {key[9:]: func_kwargs.pop(key, None) for key in list(func_kwargs.keys()) if key.startswith("langfuse_")}
             
-
+            observation_id = langfuse_data.pop("observation_id", None)
             id = str(observation_id) if observation_id else None
             start_time = _get_timestamp()
 
@@ -284,10 +280,7 @@ class LangfuseDecorator:
                 "name": name,
                 "start_time": start_time,
                 "input": input,
-                "tags": tags,
-                "metadata": metadata,
-                "session_id": session_id,
-                "user_id": user_id,
+                **langfuse_data
             }
 
             # Create observation
