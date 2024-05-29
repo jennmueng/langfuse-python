@@ -260,6 +260,10 @@ class LangfuseDecorator:
 
             # Collect default observation data
             observation_id = func_kwargs.pop("langfuse_observation_id", None)
+            tags = func_kwargs.pop("langfuse_tags", None)
+            metadata = func_kwargs.pop("langfuse_metadata", None)
+            
+
             id = str(observation_id) if observation_id else None
             start_time = _get_timestamp()
 
@@ -278,6 +282,8 @@ class LangfuseDecorator:
                 "name": name,
                 "start_time": start_time,
                 "input": input,
+                "tags": tags,
+                "metadata": metadata,
             }
 
             # Create observation
