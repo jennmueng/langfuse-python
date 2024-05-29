@@ -304,6 +304,8 @@ class LangfuseDecorator:
                 "langfuse_parent_observation_id", None
             )
 
+            langfuse_data = {key[9:]: func_kwargs.pop(key, None) for key in list(func_kwargs.keys()) if key.startswith("langfuse_")}
+            
             id = str(observation_id) if observation_id else None
             start_time = _get_timestamp()
 
@@ -322,6 +324,7 @@ class LangfuseDecorator:
                 "name": name,
                 "start_time": start_time,
                 "input": input,
+                **langfuse_data
             }
 
             # Handle user-providedparent trace ID and observation ID
