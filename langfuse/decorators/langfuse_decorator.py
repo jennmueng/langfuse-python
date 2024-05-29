@@ -262,6 +262,8 @@ class LangfuseDecorator:
             observation_id = func_kwargs.pop("langfuse_observation_id", None)
             tags = func_kwargs.pop("langfuse_tags", None)
             metadata = func_kwargs.pop("langfuse_metadata", None)
+            session_id = func_kwargs.pop("langfuse_session_id", None)
+            user_id = func_kwargs.pop("langfuse_user_id", None)
             
 
             id = str(observation_id) if observation_id else None
@@ -284,6 +286,8 @@ class LangfuseDecorator:
                 "input": input,
                 "tags": tags,
                 "metadata": metadata,
+                "session_id": session_id,
+                "user_id": user_id,
             }
 
             # Create observation
