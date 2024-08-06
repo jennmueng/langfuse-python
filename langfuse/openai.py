@@ -92,6 +92,13 @@ OPENAI_METHODS_V1 = [
         sync=True,
     ),
     OpenAiDefinition(
+        module="openai.resources.beta.chat.completions",
+        object="Completions",
+        method="parse",
+        type="chat",
+        sync=True,
+    ),
+    OpenAiDefinition(
         module="openai.resources.completions",
         object="Completions",
         method="create",
