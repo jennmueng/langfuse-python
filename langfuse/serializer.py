@@ -131,26 +131,8 @@ class EventSerializer(JSONEncoder):
             if isinstance(obj, Sequence):
                 return [self.default(item) for item in obj]
 
-            if hasattr(obj, "__slots__"):
-                return self.default(
-                    {slot: getattr(obj, slot, None) for slot in obj.__slots__}
-                )
-            elif hasattr(obj, "__dict__"):
-                obj_id = id(obj)
-
-                if obj_id in self.seen:
-                    # Break on circular references
-                    return type(obj).__name__
-                else:
-                    self.seen.add(obj_id)
-                    result = {k: self.default(v) for k, v in vars(obj).items()}
-                    self.seen.remove(obj_id)
-
-                    return result
-
-            else:
-                # Return object type rather than JSONEncoder.default(obj) which simply raises a TypeError
-                return f"<{type(obj).__name__}>"
+            # Avoid expensive recursive serialization of custom objects
+            return f"<{type(obj).__module__}.{type(obj).__qualname__}>"
 
         except Exception as e:
             logger.debug(
